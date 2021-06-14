@@ -14,16 +14,18 @@ pipeline {
               //  git 'https://github.com/shreyag28/SonarQube-Report.git'
 
                 
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+               // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                
+                echo "hello mail demo"
 
                 
             }
 
             post {
                 
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.jar'
+                always {
+                    emailext body: 'Summary of the project ', subject: 'Jenkins build', to: 'shreyag@cybage.com'
+                   
                 }
             }
         }
