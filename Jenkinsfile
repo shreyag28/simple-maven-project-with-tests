@@ -1,9 +1,31 @@
-podTemplate(label: BUILD_TAG, containers: [containerTemplate(name: 'maven', image: 'maven', command: 'sleep', args: 'infinity')]) {
-  node(BUILD_TAG) {
-    checkout scm
-    container('maven') {
-      sh 'mvn -B -ntp -Dmaven.test.failure.ignore verify'
+pipeline {
+    agent {
+    label 'master'
     }
-    junit '**/target/surefire-reports/TEST-*.xml'
-  }
+
+    tools {
+        maven "Maven"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+               
+              //  git 'https://github.com/shreyag28/SonarQube-Report.git'
+
+                
+                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+
+                
+            }
+
+            post {
+                
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+        }
+    }
 }
