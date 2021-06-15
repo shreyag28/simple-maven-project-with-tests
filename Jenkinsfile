@@ -3,9 +3,7 @@ pipeline {
     label 'master'
     }
 
-    tools {
-        maven "Maven"
-    }
+    
 
     stages {
         stage('Build') {
